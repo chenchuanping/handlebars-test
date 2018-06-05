@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Handlebars</title>
+    <script src="./js/jquery3.2.1.js"></script>
+    <script src="./js/handlebars-v4.0.10.js"></script>
+    <style>
+        .card {
+            font-size: 30px;
+            float: left;
+            margin: 20px;
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+<script id="tpl" type="text/x-handlebars-template">
+    {{#each this}}
+    <div class="card">
+        <div>{{chinese @index}}</div>
+        <div>姓名：{{name}}</div>
+        {{#if birth}}
+        <div>生日：{{birth}}</div>
+        {{/if}}
+        <div>出生地：{{home}}</div>
+        <div>职业：{{job}}</div>
+        <ul>
+            {{#each books}}
+            <!--<li {{#isred @index}} {{/isred}} {{#if ../blue}} style="color:blue;" {{/if}}>-->
+            <li {{#isred @index}}  {{/isred}}  {{#isblue @index}} {{/isblue}}>
+            {{addone @../index}}-{{addone @index}}{{this}}
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/each}}
+</script>
+<div id="card"></div>
+<script>
+    var data = [
+        {
+            name: '陈传平',
+            birth: '1989年11月05日',
+            home: '河南信阳固始',
+            job: 'IT',
+            books: [
+                '《欺骗的艺术》',
+                '《入侵的艺术》',
+                '《线上幽灵》'
+            ]
+        },
+        {
+            name: '龙龙',
+            birth: '1989年1月14日',
+            home: '内蒙古',
+            job: 'JAVA开发工程师',
+            books: [
+                '《与苹果一起疯狂》'
+            ]
+        },
+        {
+            name: '龙龙',
+            home: '北京',
+            job: '全栈工程师'
+        }
+    ];
+    Handlebars.registerHelper('chinese', function (value) {
+        var arr = ['一', '二', '三'];
+        if (this.books && this.books.length > 1) {
+            this.blue = 1;
+        }
+        return arr[value];
+    });
+
+    Handlebars.registerHelper('addone', function (value) {
+        return value = value + 1;
+    });
+    Handlebars.registerHelper('isred', function (value) {
+        if (value == 0) {
+            return 'style="color:red;"';
+        }
+    });
+    Handlebars.registerHelper('isblue', function (value) {
+        if (value && value > 0) {
+            return 'style="color:blue;"';
+        }
+    });
+    var tp1 = $("#tpl").html();
+    var template = Handlebars.compile(tp1);
+    var html = template(data);
+    $("#card").html(html);
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>handlebars_test1</title>
+    <style>
+        #test {
+            width: 200px;
+            height: 200px;
+            background-color: #f0ad4e;
+        }
+    </style>
+    <script src="../js/jquery3.2.1.js"></script>
+    <script src="../js/handlebars-v4.0.10.js"></script>
+
+</head>
+<body>
+<div id="test"></div>
+<script id="test-template" type="text/x-handlebars-template">
+    {{#if author}}
+    <p>{{title}}</p>
+    {{else}}
+    <p>{{title}}{{title}}</p>
+    {{/if}}
+    {{#unless author}}
+    <p>假</p>
+    {{/unless}}
+    <p>{{obj.version}}</p>
+    <p>{{obj/category}}</p>
+    <p>{{obj.date}}</p>
+</script>
+<script>
+
+    function renderTemplate(templateSelector, data, htmlSelector) {
+        var template = $(templateSelector).html();
+        var handle = Handlebars.compile(template);
+        var response = handle(data);
+        console.log(response);
+        $(htmlSelector).html(response);
+    }
+
+    var Data = {
+        title: 'Express',
+        author: true,
+        obj: {
+            version: 'v4.3',
+            category: 'node',
+            date: '2016'
+        }
+    };
+
+    renderTemplate("#test-template", Data, "#test");
+
+
+</script>
+</body>
+</html>
